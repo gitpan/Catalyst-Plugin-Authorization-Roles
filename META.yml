@@ -1,0 +1,20 @@
+---
+name: Catalyst-Plugin-Authorization-Roles
+version: 0.01
+author:
+  - 'Yuval Kogman, C<nothingmuch@woobling.org>'
+abstract: |-
+  Role based authorization for
+  L<Catalyst> based on L<Catalyst::Plugin::Authentication>.
+license: perl
+requires:
+  Catalyst: 5.49
+  Catalyst::Plugin::Authentication: 0.01
+  Set::Object: 0
+  Test::Exception: 0
+  Test::MockObject: 1.01
+provides:
+  Catalyst::Plugin::Authorization::Roles:
+    file: lib/Catalyst/Plugin/Authorization/Roles.pm
+    version: 0.01
+generated_by: Module::Build version 0.2611
