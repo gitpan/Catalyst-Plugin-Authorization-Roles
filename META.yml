@@ -1,6 +1,6 @@
 ---
 name: Catalyst-Plugin-Authorization-Roles
-version: 0.01
+version: 0.02
 author:
   - 'Yuval Kogman, C<nothingmuch@woobling.org>'
 abstract: |-
@@ -9,12 +9,12 @@ abstract: |-
 license: perl
 requires:
   Catalyst: 5.49
-  Catalyst::Plugin::Authentication: 0.01
+  Catalyst::Plugin::Authentication: 0.03
   Set::Object: 0
   Test::Exception: 0
   Test::MockObject: 1.01
 provides:
   Catalyst::Plugin::Authorization::Roles:
     file: lib/Catalyst/Plugin/Authorization/Roles.pm
-    version: 0.01
+    version: 0.02
 generated_by: Module::Build version 0.2611

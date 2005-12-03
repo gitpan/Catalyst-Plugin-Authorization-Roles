@@ -1,0 +1,8 @@
+Revision history for Perl extension Catalyst::Plugin::Authorization::Roles
+
+0.02    2005-12-03 18:00:00
+        - Pass-through wanted roles to storage layer.
+        - Added debug messages for role granted and denied.
+
+0.01    2005-11-27 02:21:00
+        - Initial release.

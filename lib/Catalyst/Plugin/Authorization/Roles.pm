@@ -9,7 +9,7 @@ use Set::Object         ();
 use Scalar::Util        ();
 use Catalyst::Exception ();
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 sub check_user_roles {
     my $c = shift;
@@ -32,13 +32,17 @@ sub assert_user_roles {
             "No logged in user, and none supplied as argument");
     }
 
-    my $have = Set::Object->new( $user->roles );
+    my $have = Set::Object->new( $user->roles(@_) );
     my $need = Set::Object->new(@_);
 
     if ( $have->superset($need) ) {
+        $c->log->debug( 'Role granted: ' . join( ', ', $need->elements ) )
+            if $c->debug;
         return 1;
     }
     else {
+        $c->log->debug( 'Role denied: ' . join( ', ', $need->elements ) )
+            if $c->debug;
         Catalyst::Exception->throw( "Missing roles: "
               . join( ", ", $need->difference($have)->members ) );
     }

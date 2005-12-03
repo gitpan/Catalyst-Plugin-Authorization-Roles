@@ -6,7 +6,7 @@ WriteMakefile
           'VERSION_FROM' => 'lib/Catalyst/Plugin/Authorization/Roles.pm',
           'PREREQ_PM' => {
                            'Catalyst' => '5.49',
-                           'Catalyst::Plugin::Authentication' => '0.01',
+                           'Catalyst::Plugin::Authentication' => '0.03',
                            'Set::Object' => '0',
                            'Test::Exception' => '0',
                            'Test::MockObject' => '1.01'
