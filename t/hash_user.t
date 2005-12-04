@@ -4,20 +4,17 @@ use strict;
 use warnings;
 
 use Test::More 'no_plan';
-use Test::MockObject;
 use Test::MockObject::Extends;
 use Test::Exception;
+use Catalyst::Plugin::Authentication::User::Hash;
 
 my $m; BEGIN { use_ok($m = "Catalyst::Plugin::Authorization::Roles") }
 
-# cheat Test::MockObject::Extends
-$INC{"Catalyst/Plugin/Authentication/User.pm"} = 1;
-@Catalyst::Plugin::Authentication::User::ISA = ();
-
-my $user = Test::MockObject::Extends->new("Catalyst::Plugin::Authentication::User");
-
-$user->set_list(roles => qw/admin user moose_trainer/);
-$user->mock( supports => sub { shift; @_ == 1 and $_[0] eq "roles" });
+my $user = Catalyst::Plugin::Authentication::User::Hash->new(
+    roles => [qw/admin user moose_trainer/],
+    id => "foo",
+    password => "s3cr3t",
+);
 
 my $c = Test::MockObject::Extends->new( $m );
 
@@ -39,3 +36,4 @@ $c->set_false( "user" );
 
 throws_ok { $c->assert_user_roles( "moose_trainer" ) } qr/no logged in user/i, "can't assert without logged user";
 lives_ok { $c->assert_user_roles( $user, "moose_trainer" ) } "unless supplying user explicitly";
+

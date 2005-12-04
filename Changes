@@ -1,5 +1,9 @@
 Revision history for Perl extension Catalyst::Plugin::Authorization::Roles
 
+0.03    2005-12-04 22:02:20
+        - Pass-through and accessor style role checks separated
+        - this check does $user->supports(qw/roles self_check/)
+
 0.02    2005-12-03 18:00:00
         - Pass-through wanted roles to storage layer.
         - Added debug messages for role granted and denied.

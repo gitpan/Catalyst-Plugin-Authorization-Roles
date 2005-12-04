@@ -1,6 +1,6 @@
 ---
 name: Catalyst-Plugin-Authorization-Roles
-version: 0.02
+version: 0.03
 author:
   - 'Yuval Kogman, C<nothingmuch@woobling.org>'
 abstract: |-
@@ -16,5 +16,5 @@ requires:
 provides:
   Catalyst::Plugin::Authorization::Roles:
     file: lib/Catalyst/Plugin/Authorization/Roles.pm
-    version: 0.02
+    version: 0.03
 generated_by: Module::Build version 0.2611

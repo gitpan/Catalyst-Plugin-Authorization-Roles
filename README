@@ -18,17 +18,12 @@ SYNOPSIS
             }
 
 DESCRIPTION
-    Role based authentication is very simple: every user has a list of
-    roles, which that user is allowed to assume.
+    Role based access control is very simple: every user has a list of
+    roles, which that user is allowed to assume, and every restricted part
+    of the app makes an assertion about the necessary roles.
 
-    Whenever an area that is restricted for e.g. admins, or members, or any
-    other role is accessed a check is made to see whether or not the user
-    has all the required roles.
-
-    In this plugin the user objects being checked have the "roles" method
-    invoked. This method is supposed to return a list of the roles the user
-    is allowed to assume. The roles may be any item that can be compared
-    using Set::Object.
+    If the user is a member in all of the required roles access is granted.
+    Otherwise, access is denied.
 
     For example, if you have a CRUD application, for every mutating action
     you probably want to check that the user is allowed to edit. To do this,
@@ -41,13 +36,27 @@ DESCRIPTION
                     $c->model("TheModel")->make_changes();
             }
 
+    When this plugin checks the roles of a user it will first see if the
+    user supports the self check method.
+
+    When this is not supported the list of roles is extracted from the user
+    using the "roles" method.
+
+    When this is supported, the "check_roles" method will be used to
+    delegate the role check to the user class. Classes like the one provided
+    with Catalyst::Plugin::Authentication::Store::DBIC optimize the check
+    this way.
+
 METHODS
     assert_user_roles [ $user ], @roles
-        Cheks that the user (as supplied by the first argument, or, if
-        omitted, "<$c-"user>>) has the specified roles.
+        Checks that the user (as supplied by the first argument, or, if
+        omitted, "$c->user") has the specified roles.
 
-        If for any reason ("<$c-"user>> is not defined, the user is missing
-        a role, etc) the check fails, an error is thrown.
+        If for any reason ("$c->user" is not defined, the user is missing a
+        role, etc) the check fails, an error is thrown.
+
+        You can either catch these errors with an eval, or clean them up in
+        your "end" action.
 
     check_user_roles [ $user ], @roles
         Takes the same args as "assert_user_roles", and performs the same
@@ -59,7 +68,7 @@ SEE ALSO
 AUTHOR
     Yuval Kogman, "nothingmuch@woobling.org"
 
-COPYRIGHT & LICNESE
+COPYRIGHT & LICENSE
             Copyright (c) 2005 the aforementioned authors. All rights
             reserved. This program is free software; you can redistribute
             it and/or modify it under the same terms as Perl itself.

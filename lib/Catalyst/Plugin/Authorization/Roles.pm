@@ -9,7 +9,7 @@ use Set::Object         ();
 use Scalar::Util        ();
 use Catalyst::Exception ();
 
-our $VERSION = "0.02";
+our $VERSION = "0.03";
 
 sub check_user_roles {
     my $c = shift;
@@ -32,20 +32,35 @@ sub assert_user_roles {
             "No logged in user, and none supplied as argument");
     }
 
-    my $have = Set::Object->new( $user->roles(@_) );
-    my $need = Set::Object->new(@_);
+    Catalyst::Exception->throw("User does not support roles")
+      unless $user->supports(qw/roles/);
 
-    if ( $have->superset($need) ) {
-        $c->log->debug( 'Role granted: ' . join( ', ', $need->elements ) )
-            if $c->debug;
-        return 1;
+    if ( $user->supports(qw/roles self_check/) ) {
+        if ( $user->check_roles(@_) ) {
+            $c->log->debug( 'Role granted: ' . join( ', ', @_ ) ) if $c->debug;
+            return 1;
+        }
+        else {
+            $c->log->debug( 'Role denied: ' . join( ', ', @_ ) ) if $c->debug;
+            Catalyst::Exception->throw("Missing roles");
+        }
     }
     else {
-        $c->log->debug( 'Role denied: ' . join( ', ', $need->elements ) )
-            if $c->debug;
-        Catalyst::Exception->throw( "Missing roles: "
-              . join( ", ", $need->difference($have)->members ) );
+
+        my $have = Set::Object->new( $user->roles() );
+        my $need = Set::Object->new(@_);
+
+        if ( $have->superset($need) ) {
+            $c->log->debug( 'Role granted: ' . join( ', ', @_ ) ) if $c->debug;
+            return 1;
+        }
+        else {
+            $c->log->debug( 'Role denied: ' . join( ', ', @_ ) ) if $c->debug;
+            Catalyst::Exception->throw( "Missing roles: "
+                  . join( ", ", $need->difference($have)->members ) );
+        }
     }
+
 }
 
 __PACKAGE__;
@@ -77,16 +92,12 @@ L<Catalyst> based on L<Catalyst::Plugin::Authentication>.
 
 =head1 DESCRIPTION
 
-Role based authentication is very simple: every user has a list of roles, which
-that user is allowed to assume.
+Role based access control is very simple: every user has a list of roles,
+which that user is allowed to assume, and every restricted part of the app
+makes an assertion about the necessary roles.
 
-Whenever an area that is restricted for e.g. admins, or members, or any other
-role is accessed a check is made to see whether or not the user has all the
-required roles.
-
-In this plugin the user objects being checked have the C<roles> method invoked.
-This method is supposed to return a list of the roles the user is allowed to
-assume. The roles may be any item that can be compared using L<Set::Object>.
+If the user is a member in B<all> of the required roles access is granted.
+Otherwise, access is denied.
 
 For example, if you have a CRUD application, for every mutating action you
 probably want to check that the user is allowed to edit. To do this, create an
@@ -98,17 +109,31 @@ editor role, and add that role to every user who is allowed to edit.
 		$c->model("TheModel")->make_changes();
 	}
 
+
+When this plugin checks the roles of a user it will first see if the user
+supports the self check method.
+
+When this is not supported the list of roles is extracted from the user using
+the C<roles> method.
+
+When this is supported, the C<check_roles> method will be used to delegate the
+role check to the user class. Classes like the one provided with
+L<Catalyst::Plugin::Authentication::Store::DBIC> optimize the check this way.
+
 =head1 METHODS
 
 =over 4
 
 =item assert_user_roles [ $user ], @roles
 
-Cheks that the user (as supplied by the first argument, or, if omitted,
-C<<$c->user>>) has the specified roles.
+Checks that the user (as supplied by the first argument, or, if omitted,
+C<< $c->user >>) has the specified roles.
 
-If for any reason (C<<$c->user>> is not defined, the user is missing a role,
+If for any reason (C<< $c->user >> is not defined, the user is missing a role,
 etc) the check fails, an error is thrown.
+
+You can either catch these errors with an eval, or clean them up in your C<end>
+action.
 
 =item check_user_roles [ $user ], @roles
 
@@ -125,7 +150,7 @@ L<Catalyst::Plugin::Authentication>
 
 Yuval Kogman, C<nothingmuch@woobling.org>
 
-=head1 COPYRIGHT & LICNESE
+=head1 COPYRIGHT & LICENSE
 
         Copyright (c) 2005 the aforementioned authors. All rights
         reserved. This program is free software; you can redistribute
