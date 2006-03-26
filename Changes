@@ -1,5 +1,8 @@
 Revision history for Perl extension Catalyst::Plugin::Authorization::Roles
 
+0.04    2006-03-26 10:36:00 IST
+        - Add dependency on UNIVERSAL::isa
+
 0.03    2005-12-04 22:02:20
         - Pass-through and accessor style role checks separated
         - this check does $user->supports(qw/roles self_check/)

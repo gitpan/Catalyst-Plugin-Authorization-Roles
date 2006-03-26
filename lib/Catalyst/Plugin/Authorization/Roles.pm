@@ -9,7 +9,7 @@ use Set::Object         ();
 use Scalar::Util        ();
 use Catalyst::Exception ();
 
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 
 sub check_user_roles {
     my $c = shift;
@@ -145,6 +145,8 @@ instead of throwing errors returns a boolean value.
 =head1 SEE ALSO
 
 L<Catalyst::Plugin::Authentication>
+
+L<http://catalyst.perl.org/calendar/2005/24>
 
 =head1 AUTHOR
 

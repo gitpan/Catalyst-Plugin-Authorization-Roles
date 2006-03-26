@@ -65,6 +65,8 @@ METHODS
 SEE ALSO
     Catalyst::Plugin::Authentication
 
+    <http://catalyst.perl.org/calendar/2005/24>
+
 AUTHOR
     Yuval Kogman, "nothingmuch@woobling.org"
 

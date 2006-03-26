@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.50.
+signed via the Module::Signature module, version 0.52.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,13 +14,13 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 616a6b6f16351df7ffea35eb4f017a13f74c65de Build.PL
-SHA1 896e32430288dec0fa248ef81bf069c70f68f251 Changes
+SHA1 ba468dacfaf042a1c335f911dbf76f14c2689f83 Build.PL
+SHA1 ee8764b9caee387adf975b8dbb0c6138a10311f1 Changes
 SHA1 65569bd2723aa68ec77cf250375f5ff152758dcc MANIFEST
-SHA1 fbfaae45b8a2b3cc1fc2ecfe16ad302762caa69a META.yml
-SHA1 28036f8ebb86c592f99c65f138a241103df5bd42 Makefile.PL
-SHA1 972a546d1541a2fc872a9144a875b54b04ebb812 README
-SHA1 ed3906141db5ab0edf94a70ecdd4737590806283 lib/Catalyst/Plugin/Authorization/Roles.pm
+SHA1 d7453485e868aff0a7d1e866ae90796551672112 META.yml
+SHA1 1d1684870c794bf20a1e338a12b2ff0ac5d37162 Makefile.PL
+SHA1 f3463606cbfb4d7cd5f7a1f65df34b3f995c6cec README
+SHA1 e1c1ceec34c93f2578945fcbe462e73ee2faec07 lib/Catalyst/Plugin/Authorization/Roles.pm
 SHA1 2198b99b83bcf5c5e5b8aa4851e94bb5032c6a9e t/01use.t
 SHA1 86d255a7c9f065a13049108362c949b3e35a4c24 t/02pod.t
 SHA1 e923679a1bbd8eb8f727e46f5906af25de27ec97 t/03podcoverage.t
@@ -29,7 +29,7 @@ SHA1 f0b796c3b6f1e39e0afb96268ebf4e189f112288 t/hash_user.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.1 (Darwin)
 
-iD8DBQFDk024VCwRwOvSdBgRAhHlAKCRnN//EqllpyxjS85ukv/5EO4uuQCdGS2f
-HXWjtiApl7+LUsyTMFcKBhM=
-=QIhS
+iD8DBQFEJlQmVCwRwOvSdBgRAq1+AJ9A3KooNvD55pp4VAYhWcrKoe/EbQCfU9U7
+JPtV3u3joSgHYAGExY8P//8=
+=EF0P
 -----END PGP SIGNATURE-----
