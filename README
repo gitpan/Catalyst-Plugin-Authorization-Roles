@@ -22,8 +22,10 @@ DESCRIPTION
     roles, which that user is allowed to assume, and every restricted part
     of the app makes an assertion about the necessary roles.
 
-    If the user is a member in all of the required roles access is granted.
-    Otherwise, access is denied.
+    With "assert_user_roles", if the user is a member in all of the required
+    roles access is granted. Otherwise, access is denied. With
+    "assert_any_user_role" it is enough that the user is a member in one
+    role.
 
     For example, if you have a CRUD application, for every mutating action
     you probably want to check that the user is allowed to edit. To do this,
@@ -60,6 +62,16 @@ METHODS
 
     check_user_roles [ $user ], @roles
         Takes the same args as "assert_user_roles", and performs the same
+        check, but instead of throwing errors returns a boolean value.
+
+    assert_any_user_role [ $user ], @roles
+        Checks that the user (as supplied by the first argument, or, if
+        omitted, "$c->user") has at least one of the specified roles.
+
+        Other than that, works like "assert_user_roles".
+
+    check_any_user_role [ $user ], @roles
+        Takes the same args as "assert_any_user_role", and performs the same
         check, but instead of throwing errors returns a boolean value.
 
 SEE ALSO

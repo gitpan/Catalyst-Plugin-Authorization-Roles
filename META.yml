@@ -1,21 +1,17 @@
----
-name: Catalyst-Plugin-Authorization-Roles
-version: 0.04
-author:
-  - 'Yuval Kogman, C<nothingmuch@woobling.org>'
-abstract: |-
-  Role based authorization for
-  L<Catalyst> based on L<Catalyst::Plugin::Authentication>.
-license: perl
-requires:
-  Catalyst: 5.49
-  Catalyst::Plugin::Authentication: 0.03
-  Set::Object: 1.14
-  Test::Exception: 0
-  Test::MockObject: 1.01
-  UNIVERSAL::isa: 0.05
-provides:
-  Catalyst::Plugin::Authorization::Roles:
-    file: lib/Catalyst/Plugin/Authorization/Roles.pm
-    version: 0.04
-generated_by: Module::Build version 0.2611
+--- #YAML:1.0
+name:                Catalyst-Plugin-Authorization-Roles
+version:             0.05
+abstract:            ~
+license:             ~
+generated_by:        ExtUtils::MakeMaker version 6.31
+distribution_type:   module
+requires:     
+    Catalyst:                      5.49
+    Catalyst::Plugin::Authentication: 0.03
+    Set::Object:                   1.14
+    Test::Exception:               0
+    Test::MockObject:              1.01
+    UNIVERSAL::isa:                0.05
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.2.html
+    version: 1.2

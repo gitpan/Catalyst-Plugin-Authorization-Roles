@@ -9,25 +9,28 @@ use Set::Object         ();
 use Scalar::Util        ();
 use Catalyst::Exception ();
 
-our $VERSION = "0.04";
+our $VERSION = "0.05";
 
 sub check_user_roles {
-    my $c = shift;
+    my ( $c, @roles ) = @_;
     local $@;
-    eval { $c->assert_user_roles(@_) };
+    eval { $c->assert_user_roles(@roles) };
 }
 
 sub assert_user_roles {
-    my $c = shift;
+    my ( $c, @roles ) = @_;
 
     my $user;
 
-    if ( Scalar::Util::blessed( $_[0] )
-        && $_[0]->isa("Catalyst::Plugin::Authentication::User") )
+    if ( Scalar::Util::blessed( $roles[0] )
+        && $roles[0]->isa("Catalyst::Plugin::Authentication::User") )
     {
-        $user = shift;
+        $user = shift @roles;
     }
-    elsif ( not $user = $c->user ) {
+
+    $user ||= $c->user;
+
+    unless ( $user ) {
         Catalyst::Exception->throw(
             "No logged in user, and none supplied as argument");
     }
@@ -35,32 +38,86 @@ sub assert_user_roles {
     Catalyst::Exception->throw("User does not support roles")
       unless $user->supports(qw/roles/);
 
+    local $" = ", ";
+
     if ( $user->supports(qw/roles self_check/) ) {
-        if ( $user->check_roles(@_) ) {
-            $c->log->debug( 'Role granted: ' . join( ', ', @_ ) ) if $c->debug;
+        if ( $user->check_roles(@roles) ) {
+            $c->log->debug("Role granted: @roles") if $c->debug;
             return 1;
         }
         else {
-            $c->log->debug( 'Role denied: ' . join( ', ', @_ ) ) if $c->debug;
+            $c->log->debug("Role denied: @roles") if $c->debug;
             Catalyst::Exception->throw("Missing roles");
         }
     }
     else {
 
-        my $have = Set::Object->new( $user->roles() );
-        my $need = Set::Object->new(@_);
+        my $have = Set::Object->new($user->roles);
+        my $need = Set::Object->new(@roles);
 
         if ( $have->superset($need) ) {
-            $c->log->debug( 'Role granted: ' . join( ', ', @_ ) ) if $c->debug;
+            $c->log->debug("Role granted: @roles") if $c->debug;
             return 1;
         }
         else {
-            $c->log->debug( 'Role denied: ' . join( ', ', @_ ) ) if $c->debug;
-            Catalyst::Exception->throw( "Missing roles: "
-                  . join( ", ", $need->difference($have)->members ) );
+            $c->log->debug("Role denied: @roles") if $c->debug;
+            my @missing = $need->difference($have)->members;
+            Catalyst::Exception->throw("Missing roles: @missing");
         }
     }
 
+}
+
+sub check_any_user_role {
+    my ( $c, @roles ) = @_;
+    local $@;
+    eval { $c->assert_any_user_role(@roles) };
+}
+
+sub assert_any_user_role {
+    my ( $c, @roles ) = @_;
+
+    my $user;
+
+    if ( Scalar::Util::blessed( $roles[0] )
+        && $roles[0]->isa("Catalyst::Plugin::Authentication::User") )
+    {
+        $user = shift @roles;
+    }
+
+    $user ||= $c->user;
+
+    unless ( $user ) {
+        Catalyst::Exception->throw(
+            "No logged in user, and none supplied as argument");
+    }
+
+    Catalyst::Exception->throw("User does not support roles")
+      unless $user->supports(qw/roles/);
+
+    if ( $user->supports(qw/roles self_check_any/) ) {
+        if ( $user->check_roles_any(@roles) ) {
+            $c->log->debug("At least one role granted: @roles") if $c->debug;
+            return 1;
+        }
+        else {
+            $c->log->debug("Roles denied: @roles") if $c->debug;
+            Catalyst::Exception->throw("Missing roles");
+        }
+    }
+    else {
+        my $have = Set::Object->new($user->roles);
+        my $need = Set::Object->new(@roles);
+
+        if ( $have->intersection($need)->size > 0 ) {
+            $c->log->debug("At least one role granted: @roles") if $c->debug;
+            return 1;
+        }
+        else {
+            $c->log->debug("Role denied: @roles") if $c->debug;
+            Catalyst::Exception->throw( "Missing roles" );
+        }
+    }
 }
 
 __PACKAGE__;
@@ -96,8 +153,10 @@ Role based access control is very simple: every user has a list of roles,
 which that user is allowed to assume, and every restricted part of the app
 makes an assertion about the necessary roles.
 
-If the user is a member in B<all> of the required roles access is granted.
-Otherwise, access is denied.
+With C<assert_user_roles>, if the user is a member in B<all> of the required
+roles access is granted. Otherwise, access is denied. With
+C<assert_any_user_role> it is enough that the user is a member in B<one>
+role.
 
 For example, if you have a CRUD application, for every mutating action you
 probably want to check that the user is allowed to edit. To do this, create an
@@ -138,6 +197,18 @@ action.
 =item check_user_roles [ $user ], @roles
 
 Takes the same args as C<assert_user_roles>, and performs the same check, but
+instead of throwing errors returns a boolean value.
+
+=item assert_any_user_role [ $user ], @roles
+
+Checks that the user (as supplied by the first argument, or, if omitted,
+C<< $c->user >>) has at least one of the specified roles.
+
+Other than that, works like C<assert_user_roles>.
+
+=item check_any_user_role [ $user ], @roles
+
+Takes the same args as C<assert_any_user_role>, and performs the same check, but
 instead of throwing errors returns a boolean value.
 
 =back

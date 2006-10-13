@@ -1,5 +1,9 @@
 Revision history for Perl extension Catalyst::Plugin::Authorization::Roles
 
+0.05
+        - fix tests due to a change in Test::MockObject
+        - add support for check_any style role checks.
+
 0.04    2006-03-26 10:36:00 IST
         - Add dependency on UNIVERSAL::isa
 
