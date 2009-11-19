@@ -9,7 +9,7 @@ use Set::Object         ();
 use Scalar::Util        ();
 use Catalyst::Exception ();
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 sub check_user_roles {
     my ( $c, @roles ) = @_;
@@ -224,7 +224,9 @@ Yuval Kogman E<lt>nothingmuch@woobling.orgE<gt>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright (c) 2008 the aforementioned authors.
+Copyright (c) 2005-2009
+the Catalyst::Plugin::Authorization::Roles L</AUTHOR>
+as listed above.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 

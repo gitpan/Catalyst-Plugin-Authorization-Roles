@@ -83,7 +83,8 @@ AUTHOR
     Yuval Kogman <nothingmuch@woobling.org>
 
 COPYRIGHT & LICENSE
-    Copyright (c) 2008 the aforementioned authors.
+    Copyright (c) 2005-2009 the Catalyst::Plugin::Authorization::Roles
+    "AUTHOR" as listed above.
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.

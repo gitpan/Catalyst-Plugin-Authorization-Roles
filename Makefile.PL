@@ -1,4 +1,4 @@
-use inc::Module::Install 0.77;
+use inc::Module::Install 0.91;
 
 if ( -e 'MANIFEST.SKIP' ) {
     system( 'pod2text lib/Catalyst/Plugin/Authorization/Roles.pm > README' );
@@ -17,5 +17,6 @@ requires 'UNIVERSAL::isa'                   => '0.05';
 test_requires 'Test::More';
 test_requires 'Test::Exception';
 
-auto_install;
+repository 'http://dev.catalyst.perl.org/repos/Catalyst/trunk/Catalyst-Plugin-Authorization-Roles/';
+
 WriteAll;
