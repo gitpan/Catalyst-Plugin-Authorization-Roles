@@ -1,5 +1,13 @@
 Revision history for Perl extension Catalyst::Plugin::Authorization::Roles
 
+0.09   2011-04-29
+        - Fix documentation to point at the tutorial, rather than
+          old advent article.
+        - Link to Catalyst::ActionRole::ACL
+        - Tidy up examples to show the new authentication system
+        - fix check_* to always return scalar values,
+          even in list context (RT#66812)
+
 0.08    2009-11-19
         - repackaged with a new version of Module::Install
 

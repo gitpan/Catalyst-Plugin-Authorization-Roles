@@ -9,12 +9,13 @@ use Set::Object         ();
 use Scalar::Util        ();
 use Catalyst::Exception ();
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 sub check_user_roles {
     my ( $c, @roles ) = @_;
     local $@;
     eval { $c->assert_user_roles(@roles) };
+    return $@ ? 0 : 1;
 }
 
 sub assert_user_roles {
@@ -72,6 +73,7 @@ sub check_any_user_role {
     my ( $c, @roles ) = @_;
     local $@;
     eval { $c->assert_any_user_role(@roles) };
+    return $@ ? 0 : 1;
 }
 
 sub assert_any_user_role {
@@ -134,7 +136,6 @@ Catalyst::Plugin::Authorization::Roles - Role based authorization for Catalyst b
 
     use Catalyst qw/
     	Authentication
-    	Authentication::Store::ThatSupportsRoles
     	Authorization::Roles
     /;
 
@@ -157,6 +158,9 @@ roles access is granted. Otherwise, access is denied. With
 C<assert_any_user_role> it is enough that the user is a member in B<one>
 role.
 
+There are alternative approaches to do this on a per action basis, see
+L<Catalyst::ActionRole::ACL>.
+
 For example, if you have a CRUD application, for every mutating action you
 probably want to check that the user is allowed to edit. To do this, create an
 editor role, and add that role to every user who is allowed to edit.
@@ -176,7 +180,7 @@ the C<roles> method.
 
 When this is supported, the C<check_roles> method will be used to delegate the
 role check to the user class. Classes like the one provided with
-L<Catalyst::Plugin::Authentication::Store::DBIC> optimize the check this way.
+L<iCatalyst::Authentication::Store::DBIx::Class> optimize the check this way.
 
 =head1 METHODS
 
@@ -214,9 +218,15 @@ instead of throwing errors returns a boolean value.
 
 =head1 SEE ALSO
 
-L<Catalyst::Plugin::Authentication>
+=over
 
-L<http://catalyst.perl.org/calendar/2005/24>
+=item L<Catalyst::Plugin::Authentication>
+
+=item L<Catalyst::ActionRole::ACL>
+
+=item L<< Catalyst::Manual::Tutorial::06_Authorization >>
+
+=back
 
 =head1 AUTHOR
 
@@ -224,7 +234,7 @@ Yuval Kogman E<lt>nothingmuch@woobling.orgE<gt>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright (c) 2005-2009
+Copyright (c) 2005-2011
 the Catalyst::Plugin::Authorization::Roles L</AUTHOR>
 as listed above.
 

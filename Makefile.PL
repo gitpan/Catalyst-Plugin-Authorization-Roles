@@ -17,6 +17,6 @@ requires 'UNIVERSAL::isa'                   => '0.05';
 test_requires 'Test::More';
 test_requires 'Test::Exception';
 
-repository 'http://dev.catalyst.perl.org/repos/Catalyst/trunk/Catalyst-Plugin-Authorization-Roles/';
+repository 'http://dev.catalyst.perl.org/repos/Catalyst/Catalyst-Plugin-Authorization-Roles/';
 
 WriteAll;

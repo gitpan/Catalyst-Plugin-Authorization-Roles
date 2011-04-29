@@ -5,7 +5,6 @@ NAME
 SYNOPSIS
         use Catalyst qw/
             Authentication
-            Authentication::Store::ThatSupportsRoles
             Authorization::Roles
         /;
 
@@ -27,6 +26,9 @@ DESCRIPTION
     "assert_any_user_role" it is enough that the user is a member in one
     role.
 
+    There are alternative approaches to do this on a per action basis, see
+    Catalyst::ActionRole::ACL.
+
     For example, if you have a CRUD application, for every mutating action
     you probably want to check that the user is allowed to edit. To do this,
     create an editor role, and add that role to every user who is allowed to
@@ -46,7 +48,7 @@ DESCRIPTION
 
     When this is supported, the "check_roles" method will be used to
     delegate the role check to the user class. Classes like the one provided
-    with Catalyst::Plugin::Authentication::Store::DBIC optimize the check
+    with iCatalyst::Authentication::Store::DBIx::Class optimize the check
     this way.
 
 METHODS
@@ -76,14 +78,14 @@ METHODS
 
 SEE ALSO
     Catalyst::Plugin::Authentication
-
-    <http://catalyst.perl.org/calendar/2005/24>
+    Catalyst::ActionRole::ACL
+    Catalyst::Manual::Tutorial::06_Authorization
 
 AUTHOR
     Yuval Kogman <nothingmuch@woobling.org>
 
 COPYRIGHT & LICENSE
-    Copyright (c) 2005-2009 the Catalyst::Plugin::Authorization::Roles
+    Copyright (c) 2005-2011 the Catalyst::Plugin::Authorization::Roles
     "AUTHOR" as listed above.
 
     This library is free software; you can redistribute it and/or modify it

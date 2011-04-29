@@ -29,11 +29,11 @@ lives_ok { $c->assert_any_user_role( qw/admin moose_feeder/ ) } "assert_any_user
 lives_ok { $c->assert_any_user_role( $user->roles ) } "assert_any_user_role: has all roles is OK";
 throws_ok { $c->assert_any_user_role( qw/moose_feeder climber/ ) } qr/missing role/i, "assert_any_user_role: has none of the listed roles";
 
-ok( $c->check_user_roles( "admin" ), "check_user_roles true" );
-ok( !$c->check_user_roles( "moose_feeder" ), "check_user_roles false" );
+is( $c->check_user_roles( "admin" ), 1, "check_user_roles true" );
+is( $c->check_user_roles( "moose_feeder" ), 0, "check_user_roles false" );
 
-ok( $c->check_any_user_role( qw/admin moose_feeder/ ), "check_any_user_role true" );
-ok( !$c->check_any_user_role( qw/moose_feeder climber/ ), "check_any_user_role false" );
+is( $c->check_any_user_role( qw/admin moose_feeder/ ), 1, "check_any_user_role true" );
+is( $c->check_any_user_role( qw/moose_feeder climber/ ), 0, "check_any_user_role false" );
 
 $c = MockAuthz->new(undef);
 
